@@ -1,0 +1,8 @@
+# Hub SPA routing
+/*  /index.html  200
+
+# Calculus Integration SPA routing
+/calculus-integration/*  /calculus-integration/index.html  200
+
+# Sample Vibe SPA routing
+/sample-vibe/*  /sample-vibe/index.html  200
