@@ -1,5 +1,0 @@
-# Vibe Project Specific Ignores
-dist
-node_modules
-*.local
-.DS_Store

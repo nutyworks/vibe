@@ -8,10 +8,9 @@
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
-    "dev": "concurrently \"npm run dev --workspace=apps/hub\" \"npm run dev --workspace=vibes/calculus-integration\" \"npm run dev --workspace=vibes/sample-vibe\"",
+    "dev": "concurrently \"npm run dev --workspace=apps/hub\" \"npm run dev --workspace=vibes/calculus-integration\"",
     "dev:hub": "npm run dev --workspace=apps/hub",
     "dev:calculus": "npm run dev --workspace=vibes/calculus-integration",
-    "dev:sample": "npm run dev --workspace=vibes/sample-vibe",
     "clean": "rm -rf dist apps/*/dist vibes/*/dist"
   },
   "type": "module"
