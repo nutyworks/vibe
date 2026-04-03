@@ -18,6 +18,23 @@ const problems = [
   { id: 15, question: '∫ ln(x) dx', answer: 'x ln(x) - x + C', hint: 'Integration by Parts' },
 ];
 
+const MathText = ({ text }: { text: string }) => {
+  // Regex to match functions and the differential 'd'
+  // Matches: sin, cos, tan, sec, csc, cot, ln, arcsin, arctan, and \bd\b (standalone d)
+  const parts = text.split(/(\b(?:sin|cos|tan|sec|csc|cot|ln|arcsin|arctan)\b|\bd\b)/g);
+  
+  return (
+    <>
+      {parts.map((part, i) => {
+        const isFunctionOrDiff = /^(?:sin|cos|tan|sec|csc|cot|ln|arcsin|arctan|d)$/.test(part);
+        return isFunctionOrDiff ? (
+          <span key={i} className="not-italic font-sans font-medium text-[0.95em] mx-[0.02em] inline-block">{part}</span>
+        ) : part;
+      })}
+    </>
+  );
+};
+
 function App() {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
@@ -62,14 +79,16 @@ function App() {
 
               <div className="flex flex-col items-center justify-center min-h-[140px] mb-12">
                 <h2 className="text-5xl sm:text-7xl font-serif italic text-white tracking-tight text-center">
-                  {problem.question}
+                  <MathText text={problem.question} />
                 </h2>
               </div>
 
               <div className={`transition-all duration-700 ease-out transform ${showAnswer ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}`}>
                 <div className="flex flex-col items-center justify-center p-8 bg-white/[0.02] border border-white/10 rounded-3xl mb-12">
                   <div className="text-[10px] font-mono text-emerald-500 uppercase tracking-[0.3em] mb-3">Result</div>
-                  <p className="text-2xl sm:text-4xl font-serif italic text-emerald-400 tracking-wide text-center">{problem.answer}</p>
+                  <p className="text-2xl sm:text-4xl font-serif italic text-emerald-400 tracking-wide text-center">
+                    <MathText text={problem.answer} />
+                  </p>
                 </div>
               </div>
 
