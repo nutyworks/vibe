@@ -1,38 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 const problems = [
-  { id: 1, question: '∫ xⁿ dx', answer: 'xⁿ⁺¹/(n+1) + C', hint: 'Power Rule (n ≠ -1)' },
-  { id: 2, question: '∫ 1/x dx', answer: 'ln|x| + C', hint: 'Logarithmic Rule' },
-  { id: 3, question: '∫ eˣ dx', answer: 'eˣ + C', hint: 'Exponential Rule' },
-  { id: 4, question: '∫ aˣ dx', answer: 'aˣ/ln(a) + C', hint: 'General Exponential Rule' },
-  { id: 5, question: '∫ sin(x) dx', answer: '-cos(x) + C', hint: 'Trig Rule' },
-  { id: 6, question: '∫ cos(x) dx', answer: 'sin(x) + C', hint: 'Trig Rule' },
-  { id: 7, question: '∫ sec²(x) dx', answer: 'tan(x) + C', hint: 'Trig Rule' },
-  { id: 8, question: '∫ csc²(x) dx', answer: '-cot(x) + C', hint: 'Trig Rule' },
-  { id: 9, question: '∫ sec(x)tan(x) dx', answer: 'sec(x) + C', hint: 'Trig Rule' },
-  { id: 10, question: '∫ csc(x)cot(x) dx', answer: '-csc(x) + C', hint: 'Trig Rule' },
-  { id: 11, question: '∫ 1/√(1-x²) dx', answer: 'arcsin(x) + C', hint: 'Inverse Trig' },
-  { id: 12, question: '∫ 1/(1+x²) dx', answer: 'arctan(x) + C', hint: 'Inverse Trig' },
-  { id: 13, question: '∫ tan(x) dx', answer: 'ln|sec(x)| + C', hint: 'Trig Identity' },
-  { id: 14, question: '∫ cot(x) dx', answer: 'ln|sin(x)| + C', hint: 'Trig Identity' },
-  { id: 15, question: '∫ ln(x) dx', answer: 'x ln(x) - x + C', hint: 'Integration by Parts' },
+  { id: 1, question: '\\int x^n dx', answer: '\\frac{x^{n+1}}{n+1} + C', hint: 'Power Rule (n \\neq -1)' },
+  { id: 2, question: '\\int \\frac{1}{x} dx', answer: '\\ln|x| + C', hint: 'Logarithmic Rule' },
+  { id: 3, question: '\\int e^x dx', answer: 'e^x + C', hint: 'Exponential Rule' },
+  { id: 4, question: '\\int a^x dx', answer: '\\frac{a^x}{\\ln(a)} + C', hint: 'General Exponential Rule' },
+  { id: 5, question: '\\int \\sin(x) dx', answer: '-\\cos(x) + C', hint: 'Trig Rule' },
+  { id: 6, question: '\\int \\cos(x) dx', answer: '\\sin(x) + C', hint: 'Trig Rule' },
+  { id: 7, question: '\\int \\sec^2(x) dx', answer: '\\tan(x) + C', hint: 'Trig Rule' },
+  { id: 8, question: '\\int \\csc^2(x) dx', answer: '-\\cot(x) + C', hint: 'Trig Rule' },
+  { id: 9, question: '\\int \\sec(x)\\tan(x) dx', answer: '\\sec(x) + C', hint: 'Trig Rule' },
+  { id: 10, question: '\\int \\csc(x)\\cot(x) dx', answer: '-\\csc(x) + C', hint: 'Trig Rule' },
+  { id: 11, question: '\\int \\frac{1}{\\sqrt{1-x^2}} dx', answer: '\\arcsin(x) + C', hint: 'Inverse Trig' },
+  { id: 12, question: '\\int \\frac{1}{1+x^2} dx', answer: '\\arctan(x) + C', hint: 'Inverse Trig' },
+  { id: 13, question: '\\int \\tan(x) dx', answer: '\\ln|\\sec(x)| + C', hint: 'Trig Identity' },
+  { id: 14, question: '\\int \\cot(x) dx', answer: '\\ln|\\sin(x)| + C', hint: 'Trig Identity' },
+  { id: 15, question: '\\int \\ln(x) dx', answer: 'x \\ln(x) - x + C', hint: 'Integration by Parts' },
 ];
 
-const MathText = ({ text }: { text: string }) => {
-  // Regex to match functions and the differential 'd'
-  // Matches: sin, cos, tan, sec, csc, cot, ln, arcsin, arctan, and \bd\b (standalone d)
-  const parts = text.split(/(\b(?:sin|cos|tan|sec|csc|cot|ln|arcsin|arctan)\b|\bd\b)/g);
-  
-  return (
-    <>
-      {parts.map((part, i) => {
-        const isFunctionOrDiff = /^(?:sin|cos|tan|sec|csc|cot|ln|arcsin|arctan|d)$/.test(part);
-        return isFunctionOrDiff ? (
-          <span key={i} className="not-italic font-sans font-medium text-[0.95em] mx-[0.02em] inline-block">{part}</span>
-        ) : part;
-      })}
-    </>
-  );
+const MathText = ({ text, className = "" }: { text: string; className?: string }) => {
+  const containerRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      katex.render(text, containerRef.current, {
+        throwOnError: false,
+        displayMode: false
+      });
+    }
+  }, [text]);
+
+  return <span ref={containerRef} className={className} />;
 };
 
 function App() {
@@ -78,17 +78,17 @@ function App() {
               </div>
 
               <div className="flex flex-col items-center justify-center min-h-[140px] mb-12">
-                <h2 className="text-5xl sm:text-7xl font-serif italic text-white tracking-tight text-center">
+                <div className="text-5xl sm:text-7xl text-white tracking-tight text-center">
                   <MathText text={problem.question} />
-                </h2>
+                </div>
               </div>
 
               <div className={`transition-all duration-700 ease-out transform ${showAnswer ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}`}>
                 <div className="flex flex-col items-center justify-center p-8 bg-white/[0.02] border border-white/10 rounded-3xl mb-12">
                   <div className="text-[10px] font-mono text-emerald-500 uppercase tracking-[0.3em] mb-3">Result</div>
-                  <p className="text-2xl sm:text-4xl font-serif italic text-emerald-400 tracking-wide text-center">
+                  <div className="text-2xl sm:text-4xl text-emerald-400 tracking-wide text-center">
                     <MathText text={problem.answer} />
-                  </p>
+                  </div>
                 </div>
               </div>
 
