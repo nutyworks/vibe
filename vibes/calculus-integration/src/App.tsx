@@ -1,11 +1,21 @@
 import { useState } from 'react';
 
 const problems = [
-  { id: 1, question: '∫ x² dx', answer: 'x³/3 + C', hint: 'Power Rule: ∫ xⁿ dx = xⁿ⁺¹/(n+1) + C' },
-  { id: 2, question: '∫ sin(x) dx', answer: '-cos(x) + C', hint: 'Basic Trig: d/dx(cos(x)) = -sin(x)' },
-  { id: 3, question: '∫ eˣ dx', answer: 'eˣ + C', hint: 'The easiest one!' },
-  { id: 4, question: '∫ 1/x dx', answer: 'ln|x| + C', hint: 'Logarithmic Rule' },
-  { id: 5, question: '∫ cos(x) dx', answer: 'sin(x) + C', hint: 'Basic Trig' },
+  { id: 1, question: '∫ xⁿ dx', answer: 'xⁿ⁺¹/(n+1) + C', hint: 'Power Rule (n ≠ -1)' },
+  { id: 2, question: '∫ 1/x dx', answer: 'ln|x| + C', hint: 'Logarithmic Rule' },
+  { id: 3, question: '∫ eˣ dx', answer: 'eˣ + C', hint: 'Exponential Rule' },
+  { id: 4, question: '∫ aˣ dx', answer: 'aˣ/ln(a) + C', hint: 'General Exponential Rule' },
+  { id: 5, question: '∫ sin(x) dx', answer: '-cos(x) + C', hint: 'Trig Rule' },
+  { id: 6, question: '∫ cos(x) dx', answer: 'sin(x) + C', hint: 'Trig Rule' },
+  { id: 7, question: '∫ sec²(x) dx', answer: 'tan(x) + C', hint: 'Trig Rule' },
+  { id: 8, question: '∫ csc²(x) dx', answer: '-cot(x) + C', hint: 'Trig Rule' },
+  { id: 9, question: '∫ sec(x)tan(x) dx', answer: 'sec(x) + C', hint: 'Trig Rule' },
+  { id: 10, question: '∫ csc(x)cot(x) dx', answer: '-csc(x) + C', hint: 'Trig Rule' },
+  { id: 11, question: '∫ 1/√(1-x²) dx', answer: 'arcsin(x) + C', hint: 'Inverse Trig' },
+  { id: 12, question: '∫ 1/(1+x²) dx', answer: 'arctan(x) + C', hint: 'Inverse Trig' },
+  { id: 13, question: '∫ tan(x) dx', answer: 'ln|sec(x)| + C', hint: 'Trig Identity' },
+  { id: 14, question: '∫ cot(x) dx', answer: 'ln|sin(x)| + C', hint: 'Trig Identity' },
+  { id: 15, question: '∫ ln(x) dx', answer: 'x ln(x) - x + C', hint: 'Integration by Parts' },
 ];
 
 function App() {
@@ -47,11 +57,11 @@ function App() {
             
             <div className="relative bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] p-8 sm:p-16 overflow-hidden">
               <div className="absolute top-8 right-8 text-xs font-mono text-slate-800 tracking-tighter">
-                SEQ_0{currentIdx + 1} // TOTAL_0{problems.length}
+                SEQ_{String(currentIdx + 1).padStart(2, '0')} // TOTAL_{String(problems.length).padStart(2, '0')}
               </div>
 
-              <div className="flex flex-col items-center justify-center min-h-[120px] mb-12">
-                <h2 className="text-6xl sm:text-7xl font-serif italic text-white tracking-tight">
+              <div className="flex flex-col items-center justify-center min-h-[140px] mb-12">
+                <h2 className="text-5xl sm:text-7xl font-serif italic text-white tracking-tight text-center">
                   {problem.question}
                 </h2>
               </div>
@@ -59,7 +69,7 @@ function App() {
               <div className={`transition-all duration-700 ease-out transform ${showAnswer ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}`}>
                 <div className="flex flex-col items-center justify-center p-8 bg-white/[0.02] border border-white/10 rounded-3xl mb-12">
                   <div className="text-[10px] font-mono text-emerald-500 uppercase tracking-[0.3em] mb-3">Result</div>
-                  <p className="text-3xl sm:text-4xl font-serif italic text-emerald-400 tracking-wide">{problem.answer}</p>
+                  <p className="text-2xl sm:text-4xl font-serif italic text-emerald-400 tracking-wide text-center">{problem.answer}</p>
                 </div>
               </div>
 
@@ -76,13 +86,13 @@ function App() {
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     onClick={() => setShowHint(!showHint)}
-                    className="h-14 bg-white/5 hover:bg-white/10 text-white font-bold rounded-2xl transition-all border border-white/5 active:scale-95"
+                    className="h-14 bg-white/5 hover:bg-white/10 text-white font-bold rounded-2xl transition-all border border-white/5 active:scale-95 cursor-pointer"
                   >
                     {showHint ? 'Hide Logic' : 'Show Logic'}
                   </button>
                   <button
                     onClick={() => setShowAnswer(!showAnswer)}
-                    className={`h-14 font-bold rounded-2xl transition-all active:scale-95 ${showAnswer ? 'bg-emerald-500 text-black' : 'bg-white text-black hover:bg-slate-200'}`}
+                    className={`h-14 font-bold rounded-2xl transition-all active:scale-95 cursor-pointer ${showAnswer ? 'bg-emerald-500 text-black' : 'bg-white text-black hover:bg-slate-200'}`}
                   >
                     {showAnswer ? 'Dismiss' : 'Integrate'}
                   </button>
@@ -90,7 +100,7 @@ function App() {
                 
                 <button
                   onClick={nextProblem}
-                  className="h-16 bg-slate-900 hover:bg-slate-800 text-white font-black rounded-2xl transition-all flex items-center justify-center gap-3 border border-white/5 active:scale-95 group/next"
+                  className="h-16 bg-slate-900 hover:bg-slate-800 text-white font-black rounded-2xl transition-all flex items-center justify-center gap-3 border border-white/5 active:scale-95 group/next cursor-pointer"
                 >
                   Proceed to Next 
                   <svg className="w-5 h-5 group-hover/next:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
