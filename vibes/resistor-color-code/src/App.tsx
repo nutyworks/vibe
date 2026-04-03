@@ -25,20 +25,32 @@ const colors: Record<string, ColorData> = {
 };
 
 function App() {
-  const [bands, setBands] = useState(['brown', 'black', 'red', 'gold']);
+  const [isFiveBand, setIsFiveBand] = useState(true);
+  const [bands, setBands] = useState(['brown', 'black', 'black', 'red', 'gold']);
 
   const calculateResistance = () => {
-    const digit1 = colors[bands[0]].value;
-    const digit2 = colors[bands[1]].value;
-    const multiplier = colors[bands[2]].multiplier;
-    const tolerance = colors[bands[3]].tolerance;
+    let value = 0;
+    let tolerance = 0;
 
-    const value = (digit1 * 10 + digit2) * multiplier;
+    if (isFiveBand) {
+      const d1 = colors[bands[0]].value;
+      const d2 = colors[bands[1]].value;
+      const d3 = colors[bands[2]].value;
+      const mult = colors[bands[3]].multiplier;
+      tolerance = colors[bands[4]].tolerance || 0;
+      value = (d1 * 100 + d2 * 10 + d3) * mult;
+    } else {
+      const d1 = colors[bands[0]].value;
+      const d2 = colors[bands[1]].value;
+      const mult = colors[bands[3]].multiplier; // Skip 3rd band for 4-band
+      tolerance = colors[bands[4]].tolerance || 0;
+      value = (d1 * 10 + d2) * mult;
+    }
     
     let formattedValue = '';
-    if (value >= 1000000) formattedValue = (value / 1000000) + ' MΩ';
-    else if (value >= 1000) formattedValue = (value / 1000) + ' kΩ';
-    else formattedValue = value + ' Ω';
+    if (value >= 1000000) formattedValue = (Math.round(value / 10000) / 100) + ' MΩ';
+    else if (value >= 1000) formattedValue = (Math.round(value / 10) / 100) + ' kΩ';
+    else formattedValue = (Math.round(value * 100) / 100) + ' Ω';
 
     return { formattedValue, tolerance };
   };
@@ -51,63 +63,89 @@ function App() {
     setBands(newBands);
   };
 
+  const toggleMode = () => {
+    setIsFiveBand(!isFiveBand);
+    // Reset or adjust bands if needed
+  };
+
+  const bandLabels = isFiveBand 
+    ? ['1st Digit', '2nd Digit', '3rd Digit', 'Multiplier', 'Tolerance']
+    : ['1st Digit', '2nd Digit', '(unused)', 'Multiplier', 'Tolerance'];
+
   return (
     <div className="min-h-screen w-full bg-[#050505] text-white flex flex-col items-center justify-center p-4 sm:p-8 font-sans">
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_50%,#1a1a1a_0%,#050505_100%)] pointer-events-none"></div>
 
       <div className="max-w-2xl w-full relative z-10">
         <header className="mb-12 text-center">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6 uppercase">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
             Tool 02 • Components
           </div>
-          <h1 className="text-5xl sm:text-6xl font-black tracking-tight mb-4">Color Codes.</h1>
-          <p className="text-slate-500 text-lg">Identify resistor values with visual precision.</p>
+          <h1 className="text-5xl sm:text-6xl font-black tracking-tight mb-4 leading-tight">Resistor Codes.</h1>
+          <p className="text-slate-500 text-lg mb-8">Identify values with visual precision.</p>
+          
+          <button 
+            onClick={toggleMode}
+            className="px-6 py-2 bg-slate-900 border border-white/10 rounded-full text-xs font-mono uppercase tracking-widest hover:bg-slate-800 transition-all cursor-pointer"
+          >
+            Mode: {isFiveBand ? '5-Band (Precision)' : '4-Band (Standard)'}
+          </button>
         </header>
 
-        <main className="space-y-8">
+        <main className="space-y-6">
           {/* Visual Resistor */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-[3rem] p-12 flex flex-col items-center justify-center relative overflow-hidden group">
+          <div className="bg-[#0a0a0a] border border-white/5 rounded-[3rem] p-10 sm:p-16 flex flex-col items-center justify-center relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-50"></div>
             
-            <div className="relative w-full max-w-sm h-24 flex items-center justify-center mb-8">
-              {/* Resistor Body */}
-              <div className="absolute w-full h-1.5 bg-slate-800 rounded-full"></div>
-              <div className="relative w-48 h-12 bg-[#d1b48c] rounded-2xl flex items-center justify-around px-4 shadow-xl border border-black/10">
-                {bands.map((color, i) => (
-                  <div 
-                    key={i} 
-                    className={`w-3 h-full ${colors[color].bg} ${i === 3 ? 'ml-4' : ''} shadow-inner`}
-                  ></div>
-                ))}
+            <div className="relative w-full max-w-sm h-32 flex items-center justify-center mb-10">
+              {/* Wire */}
+              <div className="absolute w-full h-1 bg-slate-800 rounded-full shadow-lg"></div>
+              {/* Body */}
+              <div className="relative w-56 h-14 bg-[#d1b48c] rounded-[2rem] flex items-center justify-between px-6 shadow-2xl border border-black/10 overflow-hidden">
+                <div className="flex justify-start gap-3 w-3/4 h-full items-center">
+                  <div className={`w-3.5 h-full ${colors[bands[0]].bg} shadow-inner`}></div>
+                  <div className={`w-3.5 h-full ${colors[bands[1]].bg} shadow-inner`}></div>
+                  {isFiveBand && <div className={`w-3.5 h-full ${colors[bands[2]].bg} shadow-inner animate-in fade-in zoom-in duration-300`}></div>}
+                  <div className={`w-3.5 h-full ${colors[bands[3]].bg} shadow-inner`}></div>
+                </div>
+                <div className={`w-3.5 h-full ${colors[bands[4]].bg} shadow-inner`}></div>
               </div>
             </div>
 
-            <div className="text-center">
-              <div className="text-[10px] font-mono text-blue-500 uppercase tracking-[0.3em] mb-2">Calculated Value</div>
-              <div className="text-5xl sm:text-6xl font-black text-white tracking-tighter">
+            <div className="text-center relative">
+              <div className="text-[10px] font-mono text-blue-500 uppercase tracking-[0.4em] mb-2 opacity-80">Resistance Value</div>
+              <div className="text-5xl sm:text-7xl font-black text-white tracking-tighter mb-1 drop-shadow-md">
                 {formattedValue}
               </div>
-              <div className="text-slate-500 font-mono mt-1">± {tolerance}% Tolerance</div>
+              <div className="text-slate-500 font-mono text-sm tracking-widest">
+                TOLERANCE ± {tolerance}%
+              </div>
             </div>
           </div>
 
           {/* Controls */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {['1st Digit', '2nd Digit', 'Multiplier', 'Tolerance'].map((label, bandIdx) => (
-              <div key={bandIdx} className="bg-white/5 border border-white/5 rounded-2xl p-4">
-                <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">{label}</div>
-                <div className="flex flex-wrap gap-2">
+            {bandLabels.map((label, bandIdx) => (
+              <div 
+                key={bandIdx} 
+                className={`bg-[#0a0a0a] border border-white/5 rounded-3xl p-5 transition-opacity duration-300 ${!isFiveBand && bandIdx === 2 ? 'opacity-20 pointer-events-none' : ''}`}
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <div className="text-[10px] font-mono text-blue-500 uppercase tracking-widest">{label}</div>
+                  <div className={`w-3 h-3 rounded-full ${colors[bands[bandIdx]].bg} border border-white/10`}></div>
+                </div>
+                <div className="flex flex-wrap gap-2.5">
                   {Object.entries(colors).map(([id, color]) => {
-                    // Filter based on band position
-                    if (bandIdx < 2 && (id === 'gold' || id === 'silver')) return null;
-                    if (bandIdx === 3 && !color.tolerance) return null;
-                    if (bandIdx === 2 && color.multiplier === undefined) return null;
+                    // Validation logic for each band
+                    if (bandIdx < 3 && (id === 'gold' || id === 'silver')) return null;
+                    if (bandIdx === 4 && !color.tolerance) return null;
+                    if (bandIdx === 3 && color.multiplier === undefined) return null;
 
                     return (
                       <button
                         key={id}
                         onClick={() => updateBand(bandIdx, id)}
-                        className={`w-8 h-8 rounded-full ${color.bg} border-2 ${bands[bandIdx] === id ? 'border-white scale-110 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100'} transition-all cursor-pointer`}
+                        className={`w-7 h-7 rounded-full ${color.bg} border-2 ${bands[bandIdx] === id ? 'border-white scale-110 ring-4 ring-blue-500/20' : 'border-transparent opacity-40 hover:opacity-100'} transition-all cursor-pointer`}
                         title={color.name}
                       ></button>
                     );
