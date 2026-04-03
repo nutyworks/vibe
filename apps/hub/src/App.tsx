@@ -19,6 +19,13 @@ function App() {
           <h1 className="text-4xl sm:text-6xl font-black tracking-tighter mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
             Vibe Hub
           </h1>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+            </span>
+            <span className="text-cyan-500/80 text-xs font-mono uppercase tracking-widest">Live Archive</span>
+          </div>
           <p className="text-slate-400 text-lg sm:text-xl">The center of all experimental vibes.</p>
         </header>
 
