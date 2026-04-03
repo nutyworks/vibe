@@ -4,5 +4,5 @@
 # Calculus Integration SPA routing
 /calculus-integration/*  /calculus-integration/index.html  200
 
-# Sample Vibe SPA routing
-/sample-vibe/*  /sample-vibe/index.html  200
+# Resistor Color Code SPA routing
+/resistor-color-code/*  /resistor-color-code/index.html  200

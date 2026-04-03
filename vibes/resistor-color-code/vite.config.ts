@@ -1,22 +1,14 @@
 import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/postcss'
 import autoprefixer from 'autoprefixer'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/',
+  plugins: [react()],
+  base: '/resistor-color-code/',
   server: {
-    port: 5173,
-    proxy: {
-      '/calculus-integration': {
-        target: 'http://localhost:5174',
-        changeOrigin: true,
-      },
-      '/resistor-color-code': {
-        target: 'http://localhost:5176',
-        changeOrigin: true,
-      },
-    },
+    port: 5176,
   },
   css: {
     postcss: {
