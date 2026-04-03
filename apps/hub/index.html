@@ -1,13 +1,81 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="bg-[#020617] text-slate-100">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>hub</title>
+    <title>Vibe Hub</title>
+    <link rel="stylesheet" href="/src/index.css">
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+  <body class="min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-8 selection:bg-cyan-500/30">
+    <!-- Background Decor -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+      <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-cyan-500/10 blur-[120px] rounded-full"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full"></div>
+    </div>
+
+    <div class="max-w-3xl w-full relative z-10">
+      <header class="mb-16 text-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 mb-6 group cursor-default">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+          </span>
+          <span class="text-cyan-500/80 text-[10px] font-mono uppercase tracking-[0.2em]">Deployment Active</span>
+        </div>
+
+        <h1 class="text-6xl sm:text-8xl font-black tracking-tighter mb-4 bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
+          Vibe Hub
+        </h1>
+        <p class="text-slate-400 text-xl font-light tracking-wide max-w-lg mx-auto leading-relaxed">
+          A curated archive of experimental web experiences and interactive modules.
+        </p>
+      </header>
+
+      <main class="space-y-6">
+        <div class="text-xs font-mono text-slate-600 uppercase tracking-widest mb-4 ml-2">Available Modules</div>
+        
+        <!-- Calculus Integration Module -->
+        <a
+          href="/calculus-integration/"
+          class="group relative block p-8 bg-slate-900/40 border border-white/5 rounded-[2rem] hover:border-cyan-500/30 hover:bg-slate-900/60 transition-all duration-500 overflow-hidden"
+        >
+          <!-- Card Glow -->
+          <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <div class="relative flex items-center justify-between gap-6">
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="px-2 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-bold uppercase tracking-wider">
+                  Academic
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                  Calculus Integration
+                </h2>
+              </div>
+              <p class="text-slate-500 text-lg leading-snug max-w-md">
+                The definitive practice module for mastering anti-differentiation.
+              </p>
+            </div>
+            
+            <div class="h-14 w-14 rounded-2xl bg-slate-800/50 border border-white/5 flex items-center justify-center group-hover:bg-cyan-500/20 group-hover:border-cyan-500/40 group-hover:text-cyan-400 transition-all duration-500 transform group-hover:scale-110">
+              <svg class="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="absolute bottom-4 left-8 text-[10px] font-mono text-slate-700 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            vibe.nuty.works/calculus-integration/
+          </div>
+        </a>
+      </main>
+
+      <footer class="mt-20 text-center">
+        <p class="text-slate-600 text-sm font-mono tracking-tighter">
+          Build v1.1.0 • © 2026 NutyWorks
+        </p>
+      </footer>
+    </div>
   </body>
 </html>
