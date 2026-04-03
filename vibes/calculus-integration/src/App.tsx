@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import katex from 'katex';
-import 'katex/dist/katex.min.css';
+
+// Use the global katex instance from the CDN
+declare global {
+  interface Window {
+    katex: any;
+  }
+}
 
 const problems = [
   { id: 1, question: '\\int x^n dx', answer: '\\frac{x^{n+1}}{n+1} + C', hint: 'Power Rule (n \\neq -1)' },
@@ -24,11 +29,26 @@ const MathText = ({ text, className = "" }: { text: string; className?: string }
   const containerRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (containerRef.current) {
-      katex.render(text, containerRef.current, {
-        throwOnError: false,
-        displayMode: false
-      });
+    const renderMath = () => {
+      if (containerRef.current && window.katex) {
+        window.katex.render(text, containerRef.current, {
+          throwOnError: false,
+          displayMode: false
+        });
+      }
+    };
+
+    // Check if katex is ready, otherwise wait for it
+    if (window.katex) {
+      renderMath();
+    } else {
+      const interval = setInterval(() => {
+        if (window.katex) {
+          renderMath();
+          clearInterval(interval);
+        }
+      }, 50);
+      return () => clearInterval(interval);
     }
   }, [text]);
 
@@ -131,7 +151,7 @@ function App() {
           </div>
           
           <div className="mt-12 text-center">
-            <a href="/" className="inline-flex items-center gap-2 text-slate-600 hover:text-white transition-colors text-xs font-mono uppercase tracking-widest">
+            <a href="/" className="inline-flex items-center gap-2 text-slate-600 hover:text-white transition-colors text-xs font-mono uppercase tracking-widest text-decoration-none">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
