@@ -19,7 +19,8 @@ This project is a monorepo designed for rapid "vibe coding" and experimental web
 - **Responsiveness:** Always use mobile-first Tailwind classes (`p-4 sm:p-8`, `text-4xl sm:text-6xl`).
 
 ## Workflow Mandates
-1.  **Creating a New Vibe:**
+1.  **Git Operations:** NEVER execute `git commit` or `git push` unless explicitly requested by the user for a specific task.
+2.  **Creating a New Vibe:****
     - Scaffold in `/vibes/`.
     - Use relative base paths in `vite.config.ts` (`base: './'`).
     - Register the new Vibe only in the Hub's navigation (`apps/hub/src/App.tsx`).
