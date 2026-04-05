@@ -8,10 +8,11 @@
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
-    "dev": "concurrently \"npm run dev --workspace=apps/hub\" \"npm run dev --workspace=vibes/calculus-integration\" \"npm run dev --workspace=vibes/resistor-color-code\"",
+    "dev": "concurrently \"npm run dev --workspace=apps/hub\" \"npm run dev --workspace=vibes/calculus-integration\" \"npm run dev --workspace=vibes/resistor-color-code\" \"npm run dev --workspace=vibes/error-rate-calculator\"",
     "dev:hub": "npm run dev --workspace=apps/hub",
     "dev:calculus": "npm run dev --workspace=vibes/calculus-integration",
     "dev:resistor": "npm run dev --workspace=vibes/resistor-color-code",
+    "dev:error": "npm run dev --workspace=vibes/error-rate-calculator",
     "clean": "rm -rf dist apps/*/dist vibes/*/dist"
   },
   "type": "module"
