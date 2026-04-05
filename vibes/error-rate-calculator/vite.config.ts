@@ -6,9 +6,9 @@ import autoprefixer from 'autoprefixer'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/resistor-color-code/',
+  base: '/error-rate-calculator/',
   server: {
-    port: 5176,
+    port: 5175,
   },
   css: {
     postcss: {

@@ -16,6 +16,10 @@ export default defineConfig({
         target: 'http://localhost:5176',
         changeOrigin: true,
       },
+      '/error-rate-calculator': {
+        target: 'http://localhost:5175',
+        changeOrigin: true,
+      },
     },
   },
   css: {
